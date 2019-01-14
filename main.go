@@ -10,7 +10,8 @@ import (
 	"flag"
 )
 
-const postURLFormat = "https://botapi.ok.ru/me/messages?access_token=%v"
+const postURLFormat = "https://%v/me/messages?access_token=%v"
+var host string
 var token string
 var chatId int64
 var filterSubstring string
@@ -65,7 +66,7 @@ func handler(w http.ResponseWriter, r *http.Request)  {
 			releaseInfo.AppVersion.ShortVersion, releaseInfo.AppVersion.Version, releaseInfo.URL)
 
 
-		postURL := fmt.Sprintf(postURLFormat, token)
+		postURL := fmt.Sprintf(postURLFormat, host, token)
 		message := TextMessage { Message {messageText}, Recipient{chatId} }
 		postMessage(postURL, message)
 
@@ -101,12 +102,13 @@ func postMessage(url string, message interface{}) {
 
 func main()  {
 	flag.StringVar(&token, "token", "", "bot api token")
+	flag.StringVar(&host, "host", "botapi.tamtam.chat", "bot api host")
 	flag.Int64Var(&chatId, "chat", 0, "destination chat id");
 	flag.StringVar(&chatTopicFormat, "topic", "Integration version %v (%v)", "chat topic format")
 	flag.StringVar(&filterSubstring, "substring", "Branch: integration", "substring search string in app notes")
 	flag.Parse()
 
-	if len(token) > 0 && chatId != 0 {
+	if len(host) > 0 && len(token) > 0 && chatId != 0 {
 		http.HandleFunc("/ok-hockeyapp", handler)
 		http.ListenAndServe(":8080", nil)
 	}
