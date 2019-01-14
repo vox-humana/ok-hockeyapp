@@ -1,4 +1,4 @@
-HockeyApp webhook script that filters and posts every new app build to OK.ru/TamTam chat via [OK Bot API](https://apiok.ru/dev/graph_api/bot_api).
+HockeyApp webhook script that filters and posts every new app build to OK.ru/TamTam chat via [TamTam BOT API](https://dev.tamtam.chat).
 
 Example of docker build & run:
 `docker build -t ok-hockeyapp .`
